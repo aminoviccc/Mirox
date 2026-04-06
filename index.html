@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mirox Mirror - Mirror Your Moments</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+background-color: #8B0000;
+color: #F5E6C8;
+font-family: ‘Montserrat’, Georgia, sans-serif;
+overflow-x: hidden;
+}
+
+nav {
+position: fixed; top: 0; left: 0; right: 0;
+z-index: 100;
+display: flex; justify-content: space-between; align-items: center;
+padding: 24px 48px;
+background: linear-gradient(to bottom, rgba(139,0,0,0.97), transparent);
+}
+.nav-logo {
+font-family: ‘Playfair Display’, Georgia, serif;
+font-size: 1.6rem;
+font-style: italic;
+letter-spacing: 2px;
+color: #F5E6C8;
+text-decoration: none;
+}
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+font-size: 0.7rem;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: #F5E6C8;
+text-decoration: none;
+opacity: 0.7;
+}
+.nav-links a:hover { opacity: 1; }
+
+.hero {
+min-height: 100vh;
+display: flex; flex-direction: column;
+justify-content: center; align-items: center;
+text-align: center;
+padding: 120px 24px 80px;
+background-color: #8B0000;
+}
+.hero-tagline {
+font-size: 0.65rem;
+letter-spacing: 6px;
+text-transform: uppercase;
+opacity: 0.6;
+margin-bottom: 24px;
+color: #F5E6C8;
+}
+.hero-title {
+font-family: ‘Playfair Display’, Georgia, serif;
+font-size: clamp(5rem, 15vw, 13rem);
+font-style: italic;
+line-height: 0.9;
+color: #F5E6C8;
+}
+.hero-subtitle {
+font-size: clamp(1rem, 2.5vw, 1.4rem);
+font-weight: 300;
+letter-spacing: 4px;
+opacity: 0.75;
+margin-top: 20px;
+text-transform: uppercase;
+color: #F5E6C8;
+}
+.hero-cta {
+margin-top: 56px;
+display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
+}
+.btn-primary {
+background: #F5E6C8;
+color: #8B0000;
+border: none;
+padding: 16px 44px;
+font-family: ‘Montserrat’, sans-serif;
+font-size: 0.7rem;
+font-weight: 600;
+letter-spacing: 3px;
+text-transform: uppercase;
+text-decoration: none;
+display: inline-block;
+}
+.btn-outline {
+background: transparent;
+color: #F5E6C8;
+border: 1px solid rgba(245,230,200,0.5);
+padding: 16px 44px;
+font-family: ‘Montserrat’, sans-serif;
+font-size: 0.7rem;
+font-weight: 500;
+letter-spacing: 3px;
+text-transform: uppercase;
+text-decoration: none;
+display: inline-block;
+}
+.deco-line {
+width: 1px; height: 80px;
+background: linear-gradient(to bottom, transparent, #F5E6C8, transparent);
+margin: 60px auto 0;
+opacity: 0.4;
+}
+
+section { padding: 100px 48px; }
+
+.section-label {
+font-size: 0.6rem;
+letter-spacing: 5px;
+text-transform: uppercase;
+opacity: 0.5;
+margin-bottom: 16px;
+color: #F5E6C8;
+}
+.section-title {
+font-family: ‘Playfair Display’, Georgia, serif;
+font-size: clamp(2rem, 5vw, 3.5rem);
+font-weight: 400;
+line-height: 1.1;
+margin-bottom: 24px;
+color: #F5E6C8;
+}
+
+.products { background-color: #8B0000; }
+.products-header {
+max-width: 1200px;
+margin: 0 auto 64px;
+display: flex;
+justify-content: space-between;
+align-items: flex-end;
+}
+.products-grid {
+max-width: 1200px;
+margin: 0 auto;
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 2px;
+}
+.product-card {
+background: rgba(245,230,200,0.04);
+border: 1px solid rgba(245,230,200,0.15);
+padding: 48px 36px;
+}
+.product-number {
+font-size: 0.55rem;
+letter-spacing: 4px;
+opacity: 0.35;
+margin-bottom: 32px;
+color: #F5E6C8;
+}
+.mirror-visual {
+width: 100%;
+aspect-ratio: 3/4;
+background: linear-gradient(145deg, rgba(245,230,200,0.06), rgba(245,230,200,0.02));
+border: 1px solid rgba(245,230,200,0.15);
+margin-bottom: 32px;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
+}
+.mirror-led {
+position: absolute;
+inset: 8px;
+border: 2px solid transparent;
+border-radius: 2px;
+animation: ledPulse 3s ease-in-out infinite;
+}
+.mirror-led.purple {
+box-shadow: 0 0 20px rgba(180,0,255,0.6), inset 0 0 20px rgba(180,0,255,0.1);
+border-color: rgba(180,0,255,0.5);
+}
+.mirror-led.white {
+box-shadow: 0 0 20px rgba(255,255,255,0.5), inset 0 0 20px rgba(255,255,255,0.08);
+border-color: rgba(255,255,255,0.4);
+animation-delay: 1s;
+}
+.mirror-led.warm {
+box-shadow: 0 0 20px rgba(255,180,60,0.6), inset 0 0 20px rgba(255,180,60,0.1);
+border-color: rgba(255,180,60,0.5);
+animation-delay: 2s;
+}
+.mirror-reflection {
+width: 40%; height: 60%;
+background: rgba(245,230,200,0.06);
+border: 1px solid rgba(245,230,200,0.1);
+}
+@keyframes ledPulse {
+0%, 100% { opacity: 0.7; }
+50% { opacity: 1; }
+}
+.product-name {
+font-family: ‘Playfair Display’, Georgia, serif;
+font-size: 1.4rem;
+color: #F5E6C8;
+margin-bottom: 8px;
+}
+.product-desc {
+font-size: 0.72rem;
+line-height: 1.7;
+opacity: 0.55;
+margin-bottom: 24px;
+color: #F5E6C8;
+}
+.product-footer {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.product-price {
+font-size: 1.2rem;
+color: #F5E6C8;
+}
+.btn-order {
+background: transparent;
+border: 1px solid rgba(245,230,200,0.3);
+color: #F5E6C8;
+padding: 10px 20px;
+font-size: 0.6rem;
+letter-spacing: 2px;
+text-transform: uppercase;
+text-decoration: none;
+}
+
+.about { background: rgba(0,0,0,0.25); }
+.about-inner {
+max-width: 1200px;
+margin: 0 auto;
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 80px;
+align-items: center;
+}
+.about-text p {
+font-size: 1.1rem;
+line-height: 1.9;
+opacity: 0.7;
+margin-top: 24px;
+color: #F5E6C8;
+}
+.about-stats {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 40px;
+}
+.stat-item { border-top: 1px solid rgba(245,230,200,0.15); padding-top: 24px; }
+.stat-number {
+font-family: ‘Playfair Display’, Georgia, serif;
+font-size: 3rem;
+line-height: 1;
+margin-bottom: 8px;
+color: #F5E6C8;
+}
+.stat-label { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.45; color: #F5E6C8; }
+
+.contact { background-color: #8B0000; }
+.contact-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+.contact-subtitle {
+font-size: 1.1rem;
+opacity: 0.6;
+margin-bottom: 56px;
+line-height: 1.7;
+color: #F5E6C8;
+}
+.contact-methods {
+display: flex;
+gap: 8px;
+justify-content: center;
+flex-wrap: wrap;
+}
+.contact-card {
+background: rgba(245,230,200,0.05);
+border: 1px solid rgba(245,230,200,0.15);
+padding: 36px 32px;
+flex: 1;
+min-width: 180px;
+text-decoration: none;
+color: #F5E6C8;
+}
+.contact-card-icon { font-size: 1.5rem; margin-bottom: 12px; }
+.contact-card-label { font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.45; margin-bottom: 8px; }
+.contact-card-value { font-size: 0.95rem; color: #F5E6C8; }
+
+footer {
+background: rgba(0,0,0,0.3);
+padding: 40px 48px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-top: 1px solid rgba(245,230,200,0.08);
+flex-wrap: wrap;
+gap: 16px;
+}
+.footer-logo {
+font-family: ‘Playfair Display’, Georgia, serif;
+font-style: italic;
+font-size: 1.4rem;
+opacity: 0.6;
+color: #F5E6C8;
+}
+.footer-tagline { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.3; color: #F5E6C8; }
+.footer-copy { font-size: 0.6rem; opacity: 0.3; color: #F5E6C8; }
+
+@media (max-width: 768px) {
+nav { padding: 20px 24px; }
+.nav-links { display: none; }
+section { padding: 72px 24px; }
+.about-inner { grid-template-columns: 1fr; gap: 40px; }
+.products-header { flex-direction: column; gap: 20px; }
+footer { flex-direction: column; text-align: center; }
+}
+</style>
+
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Mirox</a>
+  <ul class="nav-links">
+    <li><a href="#products">Collection</a></li>
+    <li><a href="#about">A propos</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <p class="hero-tagline">Agadir, Morocco - Made with Love</p>
+  <h1 class="hero-title">Mirox</h1>
+  <p class="hero-subtitle">Mirror Your Moments</p>
+  <div class="hero-cta">
+    <a href="#products" class="btn-primary">Decouvrir la collection</a>
+    <a href="#contact" class="btn-outline">Commander</a>
+  </div>
+  <div class="deco-line"></div>
+</section>
+
+<section class="products" id="products">
+  <div class="products-header">
+    <div>
+      <p class="section-label">Notre collection</p>
+      <h2 class="section-title">Miroirs LED<br>sur mesure</h2>
+    </div>
+    <p style="opacity:0.45; font-size:0.75rem; max-width:280px; line-height:1.8; text-align:right; color:#F5E6C8">
+      Chaque miroir est concu avec soin pour sublimer votre espace.
+    </p>
+  </div>
+  <div class="products-grid">
+    <div class="product-card">
+      <p class="product-number">001</p>
+      <div class="mirror-visual">
+        <div class="mirror-led purple"></div>
+        <div class="mirror-reflection"></div>
+      </div>
+      <h3 class="product-name">Violet Luxe</h3>
+      <p class="product-desc">Retroeclairage LED violet intense. Parfait pour les salons de coiffure et espaces beaute.</p>
+      <div class="product-footer">
+        <p class="product-price">Sur devis MAD</p>
+        <a href="https://wa.me/212605578741?text=Bonjour%2C%20je%20veux%20commander%20le%20miroir%20Violet%20Luxe" target="_blank" class="btn-order">Commander</a>
+      </div>
+    </div>
+    <div class="product-card">
+      <p class="product-number">002</p>
+      <div class="mirror-visual">
+        <div class="mirror-led white"></div>
+        <div class="mirror-reflection"></div>
+      </div>
+      <h3 class="product-name">Blanc Pur</h3>
+      <p class="product-desc">LED blanc froid ou chaud. Ideal pour la salle de bain et le maquillage professionnel.</p>
+      <div class="product-footer">
+        <p class="product-price">Sur devis MAD</p>
+        <a href="https://wa.me/212605578741?text=Bonjour%2C%20je%20veux%20commander%20le%20miroir%20Blanc%20Pur" target="_blank" class="btn-order">Commander</a>
+      </div>
+    </div>
+    <div class="product-card">
+      <p class="product-number">003</p>
+      <div class="mirror-visual">
+        <div class="mirror-led warm"></div>
+        <div class="mirror-reflection"></div>
+      </div>
+      <h3 class="product-name">Or Ambre</h3>
+      <p class="product-desc">Lumiere chaude doree. Une touche de luxe pour votre chambre ou dressing.</p>
+      <div class="product-footer">
+        <p class="product-price">Sur devis MAD</p>
+        <a href="https://wa.me/212605578741?text=Bonjour%2C%20je%20veux%20commander%20le%20miroir%20Or%20Ambre" target="_blank" class="btn-order">Commander</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <p class="section-label">Notre histoire</p>
+      <h2 class="section-title">Your Moments,<br>Our Mirror.</h2>
+      <p>Mirox Mirror est ne a Agadir avec une vision simple : creer des miroirs LED qui ne sont pas seulement des objets, mais des experiences.</p>
+      <p>Chaque piece est fabriquee avec amour, pour que chaque reflet soit parfait.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-item">
+        <p class="stat-number">100%</p>
+        <p class="stat-label">Fait au Maroc</p>
+      </div>
+      <div class="stat-item">
+        <p class="stat-number">LED</p>
+        <p class="stat-label">Haute qualite</p>
+      </div>
+      <div class="stat-item">
+        <p class="stat-number">inf</p>
+        <p class="stat-label">Sur mesure</p>
+      </div>
+      <div class="stat-item">
+        <p class="stat-number">Love</p>
+        <p class="stat-label">Made with love</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <p class="section-label">Nous contacter</p>
+    <h2 class="section-title">Commandez<br>votre miroir</h2>
+    <p class="contact-subtitle">Contactez-nous directement pour discuter de votre projet sur mesure. Nous livrons a Agadir et dans tout le Maroc.</p>
+    <div class="contact-methods">
+      <a href="https://wa.me/212605578741" target="_blank" class="contact-card">
+        <div class="contact-card-icon">📱</div>
+        <p class="contact-card-label">WhatsApp</p>
+        <p class="contact-card-value">+212 605 57 87 41</p>
+      </a>
+      <a href="https://wa.me/212708750078" target="_blank" class="contact-card">
+        <div class="contact-card-icon">📞</div>
+        <p class="contact-card-label">Telephone</p>
+        <p class="contact-card-value">+212 708 75 00 78</p>
+      </a>
+      <a href="https://instagram.com/miroxmirror" target="_blank" class="contact-card">
+        <div class="contact-card-icon">📸</div>
+        <p class="contact-card-label">Instagram</p>
+        <p class="contact-card-value">@miroxmirror</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-logo">Mirox</p>
+  <p class="footer-tagline">Mirror Your Moments</p>
+  <p class="footer-copy">2025 Mirox Mirror - Agadir, Morocco</p>
+</footer>
+
+</body>
+</html>
